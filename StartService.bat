@@ -1,16 +1,18 @@
 set appName=ApiGateWay
-set binPath="D:\AutomationTools\Jenkins\.jenkins\workspace\%appName%\%appName%.exe"
+set binPath="D:\AutomationTools\Jenkins\.jenkins\workspace\publish\%appName%\%appName%.exe"
 sc query %appName%
 if %errorlevel%==0 (
-    echo found the service %appName%
+    echo [app]Found The Service %appName%
 	sc stop %appName%
-	echo stop the service %appName%
+	echo [app]Stop The Service %appName%
 	sc start %appName%
-	echo start the service %appName%
+	echo [app]Start The Service %appName%
+	exit 0
 ) else (
-	echo Not Found The Service %appName%
+	echo [app]Not Found The Service %appName%
 	sc create %appName% binPath= %binPath%
-	echo create service %appName%
+	echo [app]Create Service %appName%
 	sc start %appName%
-	echo start the service %appName%
+	echo [app]Start The Service %appName%
+	exit 0
 )
