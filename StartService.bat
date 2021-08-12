@@ -7,7 +7,7 @@ if %errorlevel%==0 (
 	:echo [app]Stop The Service %appName%
 	:sc start %appName%
 	:echo [app]Start The Service %appName%
-	powershell -Command "& {Restart-Service ApiGateWay}"
+	powershell -Command "& {Restart-Service %appName%}"
 	exit 0
 ) else (
 	echo [app]Not Found The Service %appName%
