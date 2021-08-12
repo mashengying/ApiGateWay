@@ -10,7 +10,7 @@ if %errorlevel%==0 (
 	exit 0
 ) else (
 	echo [app]Not Found The Service %appName%
-	sc create %appName% binPath= %binPath%
+	sc create %appName% binPath= %binPath% start= auto
 	echo [app]Create Service %appName%
 	sc start %appName%
 	echo [app]Start The Service %appName%
