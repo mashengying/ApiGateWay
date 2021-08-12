@@ -1,5 +1,5 @@
 set appName=ApiGateWay
-set binPath="D:\AutomationTools\Jenkins\.jenkins\workspace\+%appName%"
+set binPath="D:\AutomationTools\Jenkins\.jenkins\workspace\%appName%"
 sc query %appName%
 if %errorlevel%==0 (
     echo found the service %appName%
