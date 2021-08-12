@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.Extensions.Hosting.WindowsServices;
 namespace ApiGateWay
 {
     public class Program
@@ -17,23 +17,27 @@ namespace ApiGateWay
         {
             CreateWebHostBuilder(args).Build().Run();
         }
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .ConfigureAppConfiguration((hostingContext, config) =>
+        public static IHostBuilder CreateWebHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    config
-                        .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-                        .AddJsonFile("appsettings.json", true, true)
-                        .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
-                        .AddJsonFile("ocelot.json",true,true)
-                        .AddEnvironmentVariables();
+                    webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
+                    webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
+                    {
+                        config
+                            .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
+                            .AddJsonFile("appsettings.json", true, true)
+                            .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
+                            .AddJsonFile("ocelot.json", true, true)
+                            .AddEnvironmentVariables();
+                    });
+                    webBuilder.ConfigureLogging((hostingContext, logging) =>
+                    {
+                        //TODO - Add logging
+                        logging.AddConsole();
+                    });
+                    webBuilder.UseStartup<Startup>();
                 })
-               .ConfigureLogging((hostingContext, logging) =>
-               {
-                   //TODO - Add logging
-                   logging.AddConsole();
-               })
-               .UseStartup<Startup>();
+                .UseWindowsService();
     }
 }
